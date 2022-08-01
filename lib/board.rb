@@ -3,30 +3,29 @@ class Board
     attr_accessor :root
 
     def initialize
-        @root = []
+        @root = {}
     end
 
-    def create_board(size, node = root)
-        size.times do |i|
-            size.times do |n|
-                if @root == []
-                    @root = Node.new([i, n])
-                    node = @root
-                else
-                    
-                    node.next = Node.new([i, n])
-                    node = node.next
-
-                end
-                    
-            end
-        end
+    def create_board(n = 0)
+        return if n == 64
+        add_node(Node.new(n))
+        create_board(n + 1)
+        
     end
 
+    def add_node(node)
+        @root[node.value] = node
+    end
 
-    def show_board(node = @root)
+    def create_edge(node1, node2)
+        @root[node1].add_edge(root[node2])
+        @root[node2].add_edge(root[node1])
+    end
+
+    def show_board()
+        node = @root
         until node.nil?
-            print node.value
+            print node
             node = node.next
         end
     end
